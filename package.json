@@ -18,6 +18,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "homepage": "https://cypercode9934.github.io/For-My-Love"
   "eslintConfig": {
     "extends": [
       "react-app",
