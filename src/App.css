@@ -1,38 +1,781 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+::-webkit-scrollbar{
+    width: 10px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+::-webkit-scrollbar-track{
+    background: #ffbdbd;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+::-webkit-scrollbar-thumb{
+    background: #cc78a2;
+    border-radius: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Comic Neue', Verdana, sans-serif;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+body{
+  background-color: #ffd6e8;
+  overflow-x: hidden;
   min-height: 100vh;
+  margin: 0;
+}
+
+.background{
+  position: fixed;
+  inset: 0;
+  background-image: url(./assets/background.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  z-index: -1;
+}
+
+.muteButton{
+  position: fixed;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  height: 40px;
+  width: auto;
+  margin: 20px;
+}
+
+.unmutedIcon,
+.mutedIcon{
+  height: 100%;
+}
+
+.navbar{
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px 0px;
+}
+
+.home-icon{
+  width: 80px;
+  cursor: pointer;
+  margin-right: 30px;
+  transition: .3s ease;
+}
+
+.home-icon:hover{
+  transform: scale(0.95);
+}
+
+.navLinks {
+  display: flex;
+}
+
+.navLinks button{
+  margin-right: 20px;
+  padding: 10px 25px;
+  cursor: pointer;
+  color: #b83b5e;
+  background-color: #ebbcd8;
+  font-weight: 700;
+  font-size: 1.3rem;
+  border-radius: 30px;
+  outline: none;
+  border: 3px solid #e28abf;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: .3s ease;
+}
+
+.navLinks button img{
+  width: 1.2em;
+  height: auto;
+  display: block;
+}
+
+.navLinks button:hover{
+  background-color: #e28abf;
+  font-weight: bold;
+  color: #c2335c;
+  transform: scale(0.95);
+}
+
+.navLinks button.active{
+  background-color: #e28abf;
+  color: #c2335c;
+  transform: scale(0.95);
+}
+
+/*home page*/
+
+.home{
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.home h1{
+  animation: float 5s ease-in-out infinite;
+  color: #a80d59;
+}
+
+.welcomeSign{
+  width: min(100%, 50em);
+  height: auto;
+  padding: 50px 0px;
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes float{
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.homeNav{
+  display: flex;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin: 10px 0px;
 }
 
-.App-link {
-  color: #61dafb;
+.homeNav button{
+  display: flex;
+  margin: 0px 25px;
+  padding: 10px 25px;
+  cursor: pointer;
+  background-color: #E89AC9;
+  color: #b83b5e;
+  font-weight: 700;
+  font-size: 1.3rem;
+  border-radius: 30px;
+  outline: none;
+  border: 3px solid #d67eb3;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: .3s ease;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.homeNav button:hover{
+  background-color: #eca0ce;
+  font-weight: bold;
+  transform: scale(1.05);
+}
+
+.homeNav button img{
+  width: 1.2em;
+  height: auto;
+}
+/*end of home page*/
+
+.content {
+  padding-top: 80px;
+  text-align: center;
+  max-width: 100vw;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  min-height: calc(100vh - 110px);
+}
+
+.page {
+  padding: 20px;
+}
+
+.letter-stage {
+  position: relative;
+  width: 260px;
+  height: 180px;
+  margin: 40px auto;
+  cursor: pointer;
+}
+
+.envelope-back,
+.envelope-front {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.envelope-front {
+  z-index: 2;
+}
+
+.envelope-back {
+  z-index: 0;
+}
+
+.envelope {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  transition: transform 1s ease;
+}
+
+.envelope-closed {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  transition: transform 0.3s ease;
+}
+
+.envelope-closed.dip {
+  transform: translateY(100px);
+}
+
+.paper {
+  position: absolute;
+  bottom: -45px;
+  left: 50%;
+  width: 240px;
+  height: 270px;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+
+  transform:
+    translateX(-50%)
+    translateY(0)
+    scale(1, 0.5);
+
+  transform-origin: center center;
+
+  z-index: 1;
+}
+
+.paper.peek {
+  transition: transform 0.8s ease;
+  transform:
+    translateX(-50%)
+    translateY(140px)
+    scale(1, 0.5);
+}
+
+.paper.pull{
+  transition: transform 0.8s ease;
+  transform:
+    translateX(-50%)
+    translateY(-35px)
+    scale(1, 0.5);
+}
+
+.paper.push{
+  transition: transform 0.8s ease;
+  transform:
+    translateX(-50%)
+    translateY(-35px)
+    scale(1, 0.5);
+  z-index: 3;
+}
+
+.paper.dip {
+  transition: transform 0.8s ease;
+  transform:
+    translateX(-50%)
+    translateY(100px)
+    scale(1, 0.5);
+  z-index: 3;
+}
+
+.paper.close {
+  transform:
+    translateX(-50%)
+    translateY(100px)
+    scale(1, 0.5);
+  z-index: 3;
+}
+
+.paper.open {
+  transform:
+    translateX(-50%)
+    translateY(60px)
+    scale(1, 1);
+  z-index: 3;
+}
+
+.paper.shrink {
+  transition: transform 0.5s ease;
+  transform:
+    translateX(-50%)
+    translateY(60px)
+    scale(1, 1);
+  z-index: 3;
+}
+
+.paper.full {
+  transition: transform 0.8s ease;
+  transform:
+    translateX(-50%)
+    translateY(70px)
+    scale(2);
+  z-index: 3;
+}
+
+.paper-content {
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.paperPreviewContent{
+  transform: translateY(100px) scaleY(2);
+}
+
+.paper-full-text{
+  font-size: 6.93px;
+  text-align: justify;
+}
+
+.reseal-btn {
+  margin-top: 450px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background-color: #fddeed;
+  color: #5f0732;
+  border: 1px solid #f683bb;
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.reseal-btn:hover{
+  background-color: #f8a7cf;
+  border: none;
+  transform: scale(0.97);
+}
+
+.music-page h1{
+  margin-bottom: 50px;
+  color: #a80d59;
+}
+
+.music-player {
+  max-width: 420px;
+  margin: 0 auto 60px;
+  text-align: center;
+  justify-content: center;
+}
+
+.music-player p{
+  color: #950b4f;
+}
+
+.togglePlayButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 40px;
+  line-height: 1;
+  margin-top: 10px;
+  color: #b83b5e;
+  transition: transform 0.2s ease;
+}
+
+.togglePlayButton:hover {
+  transform: scale(0.9);
+}
+
+.progress-bar {
+  width: 100%;
+  margin: 15px 0;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  --progress: 0%;
+}
+
+.progress-bar::-webkit-slider-runnable-track {
+  height: 6px;
+  background: linear-gradient(
+    to right,
+    #b83b5e 0%,
+    #b83b5e var(--progress),
+    #ddd var(--progress),
+    #ddd 100%
+  );
+  border-radius: 10px;
+}
+
+.progress-bar::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #b83b5e;
+  border-radius: 50%;
+  margin-top: -4px;
+}
+
+.lyrics-area {
+  position: relative;
+  height: 120vh;
+}
+
+.lyric-img {
+  position: absolute;
+  width: 250px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.lyric-img:hover {
+  transform: scale(1.05);
+}
+
+.lyric-img:nth-child(1) { top: 3%; left: 10%; }
+.lyric-img:nth-child(2) { top: 15%; right: 15%; }
+.lyric-img:nth-child(3) { top: 50%; left: 55%; }
+.lyric-img:nth-child(4) { top: 22%; left: 35%; }
+.lyric-img:nth-child(5) { top: 55%; left: 20%; }
+.lyric-img:nth-child(6) { top: 65%; left: 80%; }
+
+.lyric-img.active {
+  border: 3px solid #4c0628;
+  border-radius: 25px;
+  transform: scale(1.06);
+}
+
+.song-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.playerControls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .muteButton{
+    height: 23px;
+    margin: 15px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .content{
+    padding-top: 10px;
   }
+  
+  /*home page*/
+  .home{
+    padding-top: 50px;
+  }
+
+  .home-icon{
+    width: 40px;
+    margin-right: 10px;
+  }
+
+  .home h1{
+    font-size: 1.2em;
+  }
+
+  .welcomeSign{
+    width: 16em;
+    padding: 20px 0px;
+  }
+
+  .homeNav button{
+    margin: 0px 10px;
+    padding: 5px 13px;
+    font-size: 0.7rem;
+    border-width: 2px;
+  }
+
+  /*nav bar*/
+  .navLinks button{
+    margin-right: 10px;
+    padding: 6px 14px;
+    font-size: 0.5rem;
+    border-width: 2px;
+  }
+
+  /*letters page*/
+  .letter-stage {
+    width: 160px;
+    height: 180px;
+    margin: 40px auto;
+  }
+
+  .envelope-closed.dip {
+    transform: translateY(70px);
+  }
+
+  .paper {
+    bottom: 100px;
+    width: 150px;
+    height: 150px;
+
+    transform:
+      translateX(-50%)
+      translateY(0)
+      scale(1, 0.5);
+  }
+
+  .paper.peek {
+    transition: transform 0.8s ease;
+    transform:
+      translateX(-50%)
+      translateY(140px)
+      scale(1, 0.5);
+  }
+
+  .paper.pull{
+    transition: transform 0.8s ease;
+    transform:
+      translateX(-50%)
+      translateY(30px)
+      scale(1, 0.5);
+  }
+
+  .paper.push{
+    transition: transform 0.8s ease;
+    transform:
+      translateX(-50%)
+      translateY(30px)
+      scale(1, 0.5);
+    z-index: 3;
+  }
+
+  .paper.dip {
+    transition: transform 0.8s ease;
+    transform:
+      translateX(-50%)
+      translateY(120px)
+      scale(1, 0.5);
+    z-index: 3;
+  }
+
+  .paper.close {
+    transform:
+      translateX(-50%)
+      translateY(120px)
+      scale(1, 0.5);
+    z-index: 3;
+  }
+
+  .paper.open {
+    transform:
+      translateX(-50%)
+      translateY(90px)
+      scale(1, 1);
+    z-index: 3;
+  }
+
+  .paper.shrink {
+    transition: transform 0.5s ease;
+    transform:
+      translateX(-50%)
+      translateY(90px)
+      scale(1, 1);
+    z-index: 3;
+  }
+
+  .paper.full {
+    transition: transform 0.8s ease;
+    transform:
+      translateX(-50%)
+      translateY(70px)
+      scale(1.5);
+    z-index: 3;
+  }
+
+  .paper-content {
+    padding: 10px;
+    font-size: 0.7rem;
+  }
+
+  .paperPreviewContent{
+    transform: translateY(55px) scaleY(2);
+  }
+
+  .paper-full-text{
+    font-size: 4px;
+  }
+
+  .reseal-btn {
+    margin-top: 215px;
+    padding: 5px 10px;
+    font-size: 0.4rem;
+  }
+
+  /*music page*/
+  .music-page h1{
+    margin-bottom: 20px;
+    font-size: 0.8rem;
+  }
+
+  .music-player p{
+    font-size: 0.65rem;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar{
+    width: 75%;
+    margin: 10px 0;
+  }
+
+  .progress-bar::-webkit-slider-runnable-track {
+    height: 4px;
+  }
+
+  .progress-bar::-webkit-slider-thumb {
+    width: 10px;
+    height: 10px;
+    margin-top: -2.5px;
+  }
+
+  .togglePlayButton {
+    font-size: 20px;
+    margin-top: 5px;
+  }
+
+  .lyrics-area{
+    height: 90vh;
+  }
+
+  .lyric-img {
+    width: 105px;
+  }
+
+  .lyric-img:nth-child(1) { top: 0%; left: 7%; }
+  .lyric-img:nth-child(2) { top: 5%; right: 10%; }
+  .lyric-img:nth-child(3) { top: 48%; left: 58%; }
+  .lyric-img:nth-child(4) { top: 28%; left: 35%; }
+  .lyric-img:nth-child(5) { top: 53%; left: 12%; }
+  .lyric-img:nth-child(6) { top: 75%; left: 55%; }
+
+  .lyric-img.active {
+    border-width: 2px;
+    border-radius: 17px;
+    transform: scale(1.03);
+  }
+
+  .music-player {
+    margin-bottom: 50px;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) and (max-width: 768px){
+  .muteButton{
+    height: 35px;
+  }
+
+  .content{
+    padding-top: 50px;
+  }
+  
+  /*home page*/
+  .home h1{
+    font-size: 1.7em;
+  }
+
+  .welcomeSign{
+    width: 30em;
+    padding: 35px 0px;
+  }
+
+  .homeNav button{
+    margin: 0px 15px;
+    padding: 7px 20px;
+    font-size: 1.1rem;
+  }
+
+  /*nav bar*/
+  .navLinks button{
+    margin-right: 15px;
+    padding: 8px 18px;
+    font-size: 1.1rem;
+    border-width: 2px;
+  }
+  
+  .home-icon{
+    width: 70px;
+    margin-right: 20px;
+  }
+
+  /*music page*/
+  .music-page h1{
+    margin-bottom: 40px;
+    font-size: 1.5rem;
+  }
+
+  .music-player p{
+    font-size: 1rem;
+  }
+
+  .togglePlayButton {
+    font-size: 30px;
+  }
+
+  .lyrics-area {
+    height: 160vh;
+  }
+
+  .lyric-img {
+    width: 200px;
+  }
+
+  .lyric-img:nth-child(1) { top: 2%; left: 10%; }
+  .lyric-img:nth-child(2) { top: 10%; right: 10%; }
+  .lyric-img:nth-child(3) { top: 50%; left: 58%; }
+  .lyric-img:nth-child(4) { top: 32%; left: 35%; }
+  .lyric-img:nth-child(5) { top: 55%; left: 15%; }
+  .lyric-img:nth-child(6) { top: 75%; left: 60%; }
+
+  .lyric-img.active {
+    border-width: 2px;
+    border-radius: 17px;
+    transform: scale(1.03);
+  }
+
+  .music-player {
+    margin-bottom: 50px;
+  }
+}
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) and (max-width: 992px){
+  .muteButton{
+    height: 37px;
+  }
+  
+  /*home page*/
+  .home h1{
+    font-size: 1.85em;
+  }
+
+  .welcomeSign{
+    width: 38em;
+    padding: 38px 0px;
+  }
+
+  .homeNav button{
+    margin: 0px 20px;
+    padding: 9px 23px;
+    font-size: 1.2rem;
+  }
+
+  /*music page*/
+  .lyrics-area {
+    height: 225vh;
+  }
+
+  .lyric-img:nth-child(1) { top: 3%; left: 10%; }
+  .lyric-img:nth-child(2) { top: 9%; right: 15%; }
+  .lyric-img:nth-child(3) { top: 50%; left: 55%; }
+  .lyric-img:nth-child(4) { top: 30%; left: 35%; }
+  .lyric-img:nth-child(5) { top: 55%; left: 15%; }
+  .lyric-img:nth-child(6) { top: 78%; left: 60%; }
 }
